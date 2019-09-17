@@ -16,10 +16,11 @@ client.timeout = 20 * 1000;
 router.get('/', function (req, res, next) {
   console.log('連線狀態:' + res.statusCode);
   res.render('index.html', {
+    //傳遞參數 title
     title: 'Hey!',
+    //傳遞參數 subtitle
     subtitle: "Hello World！"
   });
-
 });
 
 

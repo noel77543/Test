@@ -27,8 +27,8 @@ var searchData = "";
 var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: "localhost",
-    user: "noel77543",
-    password: "g121887782",
+    user: "noel",
+    password: "1234567",
     //這句要DB建立好後才加 表示指向該DB
     database: DB_MEMBER_DATA_BASE
 });
@@ -37,7 +37,7 @@ connection.connect(function (err) {
 
     // if (err) throw err;
     console.log("Connected!");
-    queryAction(queryCreateTable,"Table Created");
+    queryAction(queryCreateDatabase,"DataBase Created");
 });
 
 
