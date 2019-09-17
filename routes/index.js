@@ -1,23 +1,31 @@
 
+const _API_TEST = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
 var express = require('express');
 var router = express.Router();
-const _API_TEST = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
+var fs = require('fs');
 var XMLHttpRequest = require("XMLHttpRequest").XMLHttpRequest;
 var client = new XMLHttpRequest();
 client.responseType = 'json';
 client.timeout = 20 * 1000;
 
 
-/* GET home page. */
+/***
+ * 首頁網址 
+ * url : http://localhost:port/
+ */
 router.get('/', function (req, res, next) {
   console.log('連線狀態:' + res.statusCode);
-  res.render('index', { title: 'Hey!', description: "Noel's World" });
+  res.render('index.html', {
+    title: 'Hey!',
+    subtitle: "Hello World！"
+  });
 
 });
 
 
 /***
- * GET  介接網路資源
+ * API GET  介接網路資源
+ * url : http://localhost:port/getSuperheroes
  */
 router.get('/getSuperheroes', function (req, res, next) {
   console.log('連線狀態:' + res.statusCode);
@@ -31,14 +39,12 @@ router.get('/getSuperheroes', function (req, res, next) {
 });
 
 /***
- * GET  local json - member address
+ * API GET  load local json - member address
+ * url : http://localhost:port/getMemberAddress
  */
 router.get('/getMemberAddress', function (req, res, next) {
   console.log('連線狀態:' + res.statusCode);
-
-  var fs = require('fs');
-  var rawdata = fs.readFileSync('files/TestJson.json');
-  res.send(JSON.parse(rawdata));
+  res.send(JSON.parse(fs.readFileSync('files/TestJson.json')));
 });
 
 
