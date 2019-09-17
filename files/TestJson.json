@@ -1,0 +1,17 @@
+{
+    "memberList":[
+        {
+            "name": "name1",
+            "address": "台北市1號"
+        },
+        {
+            "name": "name2",
+            "address": "台北市2號"
+        },
+        {
+            "name": "name3",
+            "address": "台北市3號"
+        }
+    ],
+    "title": "會員名單"
+}
