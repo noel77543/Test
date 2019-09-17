@@ -87,14 +87,13 @@ module.exports.addNormalMember = function (name, address) {
  * 使此方法為外部可飲用 like java's public
  */
 module.exports.getAllNormalMember = function () {
-    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        return connection.query(selectDataNormalMember, function (error, result) {
-            console.log("AllNormalMemberData Selected");
-            console.log(result);
-            return result
-        });
-    }
-
+    // if (dbIsExists(DB_MEMBER_DATA_BASE)) {
+    //      connection.query(selectDataNormalMember, function (error, result) {
+    //         console.log("AllNormalMemberData Selected");
+    //         console.log(result);
+    //         return result
+    //     });
+    // }
 }
 
 
@@ -109,7 +108,6 @@ module.exports.addVIPMember = function (name, address) {
         insertDataVIPMember = insertDataVIPMember + "(" + name + "," + address + ")VALUES('Learn how to insert a new row',true)"
         queryAction(insertDataVIPMember, "VIPMemberData Inserted");
     }
-
 }
 
 //----------
@@ -119,13 +117,12 @@ module.exports.addVIPMember = function (name, address) {
  * 使此方法為外部可飲用 like java's public
  */
 module.exports.getAllVIPMember = function () {
-    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        connection.query(selectDataVIPMember, function (error, result) {
-            console.log("AllVIPMemberData Selected");
-            console.log(result);
-        });
-    }
-
+    // if (dbIsExists(DB_MEMBER_DATA_BASE)) {
+    //     connection.query(selectDataVIPMember, function (error, result) {
+    //         console.log("AllVIPMemberData Selected");
+    //         console.log(result);
+    //     });
+    // }
 }
 
 

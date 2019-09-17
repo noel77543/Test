@@ -76,7 +76,8 @@ router.post('/addNormalMember', function (request, response, next) {
  */
 router.get('/getAllNormalMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
-  response.send(JSON.stringify(dtaBaseConnection.getAllNormalMember()));
+
+  response.send(dtaBaseConnection.getAllNormalMember());
 })
 
 
