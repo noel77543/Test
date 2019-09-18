@@ -65,8 +65,7 @@ router.get('/getMemberAddress', function (request, response, next) {
 router.post('/addNormalMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
   var requestBody = request.body;
-  dtaBaseConnection.addNormalMember(requestBody.name, requestBody.address);
-  response.send("已新增一般會員,名稱:" + requestBody.name + ",地址:" + requestBody.address);
+  dtaBaseConnection.addNormalMember(response,requestBody.name, requestBody.address);
 })
 
 //---------
@@ -76,8 +75,7 @@ router.post('/addNormalMember', function (request, response, next) {
  */
 router.get('/getAllNormalMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
-
-  response.send(dtaBaseConnection.getAllNormalMember());
+  dtaBaseConnection.getAllNormalMember(response);
 })
 
 
@@ -95,7 +93,6 @@ router.post('/addVIPMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
   var requestBody = request.body;
   dtaBaseConnection.addVIPMember(requestBody.name, requestBody.address);
-  response.send("已新增VIP會員,名稱:" + requestBody.name + ",地址:" + requestBody.address);
 })
 
 
@@ -104,6 +101,9 @@ router.post('/addVIPMember', function (request, response, next) {
 /***
  * API GET 至DB取得所有高級會員
  */
-
+router.get('/getAllVIPMember', function (request, response, next) {
+  console.log('連線狀態:' + response.statusCode);
+  dtaBaseConnection.getAllVIPMember(response);
+})
 
 module.exports = router;

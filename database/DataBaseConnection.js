@@ -1,30 +1,47 @@
+
+
+
+/**
+ * 如果你在嘗試使用此js檔相關function去操作DB 
+ * 時出現
+ * 這表示你尚未安裝MySQL環境
+ * 請參考 :
+ * 1. https://jerrynest.io/windows-mysql-installer/
+ * 2. https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server
+ *    你需要在WorkBench輸入以下query
+ *    //允許連線
+ *    a. ALTER USER 'yourUserName'@'yourHost' IDENTIFIED WITH mysql_native_password BY 'yourPassword'
+ *    //建立Database
+ *    b. CREATE DATABASE MemberDataBase
+ *    //建立一般會員Table  與column (流水號, 姓名 , 地址)
+ *    c. create table MemberDataBase.NormalMember (sid INT AUTO_INCREMENT PRIMARY KEY,name TINYTEXT, address TINYTEXT);
+ *    //建立高級會員Tabel  與column (流水號, 姓名 , 地址)
+ *    d. create table MemberDataBase.VIPMember (sid INT AUTO_INCREMENT PRIMARY KEY,name TINYTEXT, address TINYTEXT);
+ * 3. http://blog.e-happy.com.tw/mysql-the-mysql-encoding-latin1-switch-to-utf8/
+ *    如果出現MYSQL:Unknown column '字段名' in 'field list'的error表示欄位編碼不符UTF8格式
+ */
+
+
 //會員db
 const DB_MEMBER_DATA_BASE = "MemberDataBase";
 //會員db  一般會員table
 const TABLE_NORMAL_MEMBER = "NormalMember";
 //會員db 高級會員table
 const TABLE_VIP_MEMBER = "VIPMember";
-//名稱
-const COLUMN_NAME = "name VARCHAR(255)";
-//地址
-const COLUMN_ADDRESS = "address VARCHAR(255)";
-
-//建立DB
-var queryCreateDatabase = "CREATE DATABASE " + DB_MEMBER_DATA_BASE;
-//建立table 與其 columns
-var queryCreateTable = "CREATE TABLE " +
-    TABLE_NORMAL_MEMBER + "(" + COLUMN_NAME + "," + COLUMN_ADDRESS + ")" + ","
-    + TABLE_VIP_MEMBER + "(" + COLUMN_NAME + "," + COLUMN_ADDRESS + ")";
+// //名稱
+const COLUMN_NAME = "name";
+// //地址
+const COLUMN_ADDRESS = "address";
 
 //新增一般會員資料
-var insertDataNormalMember = "INSERT INTO" + TABLE_NORMAL_MEMBER;
+// var insertDataNormalMember = "INSERT INTO " + TABLE_NORMAL_MEMBER;
 //新增高級會員資料
-var insertDataVIPMember = "INSERT INTO" + TABLE_VIP_MEMBER;
+var insertDataVIPMember = "INSERT INTO " + TABLE_VIP_MEMBER;
 
 //查詢一般會員資料
-var selectDataNormalMember = "SELECT * FROM" + TABLE_NORMAL_MEMBER;
+var selectDataNormalMember = "SELECT * FROM " + TABLE_NORMAL_MEMBER;
 //查詢高級會員資料
-var selectDataVIPMember = "SELECT * FROM" + TABLE_VIP_MEMBER
+var selectDataVIPMember = "SELECT * FROM " + TABLE_VIP_MEMBER
 
 //刪除資料
 var deleteData = "";
@@ -35,18 +52,17 @@ var updateData = "";
 var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: "localhost",
-    user: "noel",
-    password: "1234567",
-    //這句要DB建立好後才加 表示指向該DB
+    user: "Noel",
+    password: "Gg121887782",
     database: DB_MEMBER_DATA_BASE
 });
 
 connection.connect(function (error) {
-    //如果不存在則創建
-    if (!dbIsExists(DB_MEMBER_DATA_BASE)) {
-        queryAction(queryCreateDatabase, "DataBase Created")
-        queryAction(queryCreateTable, "Table Created")
+    if (error) {
+        console.log("ERROR! =" + error.message);
+        return
     }
+    console.log("DataBase已連線")
 });
 
 //--------
@@ -54,13 +70,14 @@ connection.connect(function (error) {
 /***
  *  sql 指令 並查看Log
  */
-function queryAction(querySql, logString) {
-    connection.query(querySql, function (error, result) {
-        // if (error) {
-        //     console.log("queryAction exception =" + error)
-        //     return;
-        // }
-        console.log(logString);
+function queryAction(response, querySql, logString) {
+    connection.query(querySql, function (error, result, fields) {
+        if (error) {
+            response.send(error.message);
+            return;
+        }
+        console.log("logString=" + logString);
+        response.send(result);
     });
 }
 
@@ -71,12 +88,17 @@ function queryAction(querySql, logString) {
  *  insert NormalMember table的資料
  *  使此方法為外部可引用 like java's public
  */
-module.exports.addNormalMember = function (name, address) {
+module.exports.addNormalMember = function (response, name, address) {
     if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        insertDataNormalMember = insertDataNormalMember + "(" + name + "," + address + ")VALUES('Learn how to insert a new row',true)"
-        queryAction(insertDataNormalMember, "NormalMemberData Inserted");
+        console.log("name=" + name);
+        console.log("address=" + address);
+        
+        var sqlQuery = "INSERT INTO " + TABLE_NORMAL_MEMBER+ "( name, address) VALUES(" + name + ", " + address + ")"
+        console.log("sqlQuery=" + sqlQuery);
+        queryAction(response, sqlQuery, "NormalMemberData Inserted");
+    } else {
+        response.send("資料庫不存在");
     }
-
 }
 
 
@@ -86,14 +108,17 @@ module.exports.addNormalMember = function (name, address) {
  * where NormalMember table的所有資料
  * 使此方法為外部可飲用 like java's public
  */
-module.exports.getAllNormalMember = function () {
-    // if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-    //      connection.query(selectDataNormalMember, function (error, result) {
-    //         console.log("AllNormalMemberData Selected");
-    //         console.log(result);
-    //         return result
-    //     });
-    // }
+module.exports.getAllNormalMember = function (response) {
+    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
+        connection.query(selectDataNormalMember, function (error, result, fields) {
+            if (error) {
+                response.send(error.message);
+                return;
+            }
+            console.log("AllNormalMemberData Selected");
+            response.send(JSON.stringify(result));
+        });
+    }
 }
 
 
@@ -103,10 +128,10 @@ module.exports.getAllNormalMember = function () {
  *  insert VIPMember table的資料
  *  使此方法為外部可引用 like java's public
  */
-module.exports.addVIPMember = function (name, address) {
+module.exports.addVIPMember = function (response, name, address) {
     if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        insertDataVIPMember = insertDataVIPMember + "(" + name + "," + address + ")VALUES('Learn how to insert a new row',true)"
-        queryAction(insertDataVIPMember, "VIPMemberData Inserted");
+        insertDataVIPMember = insertDataVIPMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES (" + name + ", " + address + ")"
+        queryAction(response, insertDataVIPMember, "VIPMemberData Inserted");
     }
 }
 
@@ -116,13 +141,17 @@ module.exports.addVIPMember = function (name, address) {
  * where VIPMember table的所有資料
  * 使此方法為外部可飲用 like java's public
  */
-module.exports.getAllVIPMember = function () {
-    // if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-    //     connection.query(selectDataVIPMember, function (error, result) {
-    //         console.log("AllVIPMemberData Selected");
-    //         console.log(result);
-    //     });
-    // }
+module.exports.getAllVIPMember = function (response) {
+    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
+        connection.query(selectDataVIPMember, function (error, result, fields) {
+            if (error) {
+                response.send(error.message);
+                return;
+            }
+            console.log("AllVIPMemberData Selected");
+            response.send(JSON.stringify(result));
+        });
+    }
 }
 
 
