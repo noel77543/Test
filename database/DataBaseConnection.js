@@ -3,8 +3,7 @@
 
 /**
  * 如果你在嘗試使用此js檔相關function去操作DB 
- * 時出現
- * 這表示你尚未安裝MySQL環境
+ * 請確認是否安裝MySQL環境
  * 請參考 :
  * 1. https://jerrynest.io/windows-mysql-installer/
  * 2. https://stackoverflow.com/questions/50093144/mysql-8-0-client-does-not-support-authentication-protocol-requested-by-server
@@ -17,10 +16,9 @@
  *    c. create table MemberDataBase.NormalMember (sid INT AUTO_INCREMENT PRIMARY KEY,name TINYTEXT, address TINYTEXT);
  *    //建立高級會員Tabel  與column (流水號, 姓名 , 地址)
  *    d. create table MemberDataBase.VIPMember (sid INT AUTO_INCREMENT PRIMARY KEY,name TINYTEXT, address TINYTEXT);
- * 3. http://blog.e-happy.com.tw/mysql-the-mysql-encoding-latin1-switch-to-utf8/
- *    如果出現MYSQL:Unknown column '字段名' in 'field list'的error表示欄位編碼不符UTF8格式
  */
 
+var mysql = require('mysql');
 
 //會員db
 const DB_MEMBER_DATA_BASE = "MemberDataBase";
@@ -34,7 +32,7 @@ const COLUMN_NAME = "name";
 const COLUMN_ADDRESS = "address";
 
 //新增一般會員資料
-// var insertDataNormalMember = "INSERT INTO " + TABLE_NORMAL_MEMBER;
+var insertDataNormalMember = "INSERT INTO " + TABLE_NORMAL_MEMBER;
 //新增高級會員資料
 var insertDataVIPMember = "INSERT INTO " + TABLE_VIP_MEMBER;
 
@@ -49,7 +47,6 @@ var deleteData = "";
 var updateData = "";
 
 
-var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: "localhost",
     user: "Noel",
@@ -90,10 +87,8 @@ function queryAction(response, querySql, logString) {
  */
 module.exports.addNormalMember = function (response, name, address) {
     if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        // var sqlQuery = "INSERT INTO " + TABLE_NORMAL_MEMBER+ "( name, address) VALUES(${" + name + "}, ${" + address + "})"
-
-        var sqlQuery = "insert into NormalMember(name,address) values('" + name + "','" + address + "');";
-        queryAction(response, sqlQuery, "NormalMemberData Inserted");
+        insertDataNormalMember = insertDataNormalMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
+        queryAction(response, insertDataNormalMember, "NormalMemberData Inserted");
     } else {
         response.send("資料庫不存在");
     }
@@ -107,6 +102,8 @@ module.exports.addNormalMember = function (response, name, address) {
  * 使此方法為外部可飲用 like java's public
  */
 module.exports.getAllNormalMember = function (response) {
+    console.log();
+    
     if (dbIsExists(DB_MEMBER_DATA_BASE)) {
         connection.query(selectDataNormalMember, function (error, result, fields) {
             if (error) {
@@ -128,7 +125,7 @@ module.exports.getAllNormalMember = function (response) {
  */
 module.exports.addVIPMember = function (response, name, address) {
     if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        insertDataVIPMember = insertDataVIPMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES (" + name + ", " + address + ")"
+        insertDataVIPMember = insertDataVIPMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
         queryAction(response, insertDataVIPMember, "VIPMemberData Inserted");
     }
 }
