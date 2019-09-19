@@ -20,7 +20,6 @@ var inputVipAddress;
  */
 router.get('/', function (req, res, next) {
   console.log('連線狀態:' + res.statusCode);
-
   res.render('home.html', {
     //傳遞參數 title
     title: 'Hey!',
