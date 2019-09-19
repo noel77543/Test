@@ -90,11 +90,9 @@ function queryAction(response, querySql, logString) {
  */
 module.exports.addNormalMember = function (response, name, address) {
     if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        console.log("name=" + name);
-        console.log("address=" + address);
-        
-        var sqlQuery = "INSERT INTO " + TABLE_NORMAL_MEMBER+ "( name, address) VALUES(" + name + ", " + address + ")"
-        console.log("sqlQuery=" + sqlQuery);
+        // var sqlQuery = "INSERT INTO " + TABLE_NORMAL_MEMBER+ "( name, address) VALUES(${" + name + "}, ${" + address + "})"
+
+        var sqlQuery = "insert into NormalMember(name,address) values('" + name + "','" + address + "');";
         queryAction(response, sqlQuery, "NormalMemberData Inserted");
     } else {
         response.send("資料庫不存在");
