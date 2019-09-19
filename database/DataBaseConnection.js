@@ -86,12 +86,8 @@ function queryAction(response, querySql, logString) {
  *  使此方法為外部可引用 like java's public
  */
 module.exports.addNormalMember = function (response, name, address) {
-    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        insertDataNormalMember = insertDataNormalMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
-        queryAction(response, insertDataNormalMember, "NormalMemberData Inserted");
-    } else {
-        response.send("資料庫不存在");
-    }
+    insertDataNormalMember = insertDataNormalMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
+    queryAction(response, insertDataNormalMember, "NormalMemberData Inserted");
 }
 
 
@@ -103,17 +99,14 @@ module.exports.addNormalMember = function (response, name, address) {
  */
 module.exports.getAllNormalMember = function (response) {
     console.log();
-    
-    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        connection.query(selectDataNormalMember, function (error, result, fields) {
-            if (error) {
-                response.send(error.message);
-                return;
-            }
-            console.log("AllNormalMemberData Selected");
-            response.send(JSON.stringify(result));
-        });
-    }
+    connection.query(selectDataNormalMember, function (error, result, fields) {
+        if (error) {
+            response.send(error.message);
+            return;
+        }
+        console.log("AllNormalMemberData Selected");
+        response.send(JSON.stringify(result));
+    });
 }
 
 
@@ -124,10 +117,8 @@ module.exports.getAllNormalMember = function (response) {
  *  使此方法為外部可引用 like java's public
  */
 module.exports.addVIPMember = function (response, name, address) {
-    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        insertDataVIPMember = insertDataVIPMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
-        queryAction(response, insertDataVIPMember, "VIPMemberData Inserted");
-    }
+    insertDataVIPMember = insertDataVIPMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
+    queryAction(response, insertDataVIPMember, "VIPMemberData Inserted");
 }
 
 //----------
@@ -137,28 +128,12 @@ module.exports.addVIPMember = function (response, name, address) {
  * 使此方法為外部可飲用 like java's public
  */
 module.exports.getAllVIPMember = function (response) {
-    if (dbIsExists(DB_MEMBER_DATA_BASE)) {
-        connection.query(selectDataVIPMember, function (error, result, fields) {
-            if (error) {
-                response.send(error.message);
-                return;
-            }
-            console.log("AllVIPMemberData Selected");
-            response.send(JSON.stringify(result));
-        });
-    }
-}
-
-
-//----------
-
-/***
- *  DB 是否存在
- */
-function dbIsExists(dataBaseName) {
-    var XMLHttpRequest = require("XMLHttpRequest").XMLHttpRequest;
-    var client = new XMLHttpRequest();
-    client.open('HEAD', dataBaseName, false);
-    client.send();
-    return client.status != 404;
+    connection.query(selectDataVIPMember, function (error, result, fields) {
+        if (error) {
+            response.send(error.message);
+            return;
+        }
+        console.log("AllVIPMemberData Selected");
+        response.send(JSON.stringify(result));
+    });
 }

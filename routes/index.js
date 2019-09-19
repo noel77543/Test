@@ -11,23 +11,56 @@ var XMLHttpRequest = require("XMLHttpRequest").XMLHttpRequest;
 var fs = require('fs');
 var router = express.Router();
 
+var buttonNormalBuild;
+var inputNormalName;
+var inputNormalAddress;
+
+var buttonVipBuild;
+var inputVipName;
+var inputVipAddress;
+
+
+
+init();
+
 
 //---------
 
 /***
- *  排程 每天的 早上0秒0分10時 發起LineNotify
+ * 初始化
  */
-schedule.scheduleJob(_SCHEDULE_PATTERN, function () {
-  var client = new XMLHttpRequest();
-  client.responseType = 'json';
-  client.timeout = 20 * 1000;
-  client.open('POST', _API_LINE_NOTIFY);
-  client.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-  client.setRequestHeader("Authorization", "Bearer " + _TOKEN_LINE_NOTIFY);
-  client.send(encodeFormData({
-    message: '各位早安，\n新的一天繼續努力，莫忘初衷莫忘訂便當。'
-  }));
-});
+function init() {
+  inputNormalName = document.getElementById('normalName');
+  inputNormalAddress = document.getElementById('normalAddress');
+  buttonNormalBuild = document.getElementById('normalBuild');
+  buttonNormalBuild.addEventListener('onClickedBuildNormalData', function (e) {
+    console.log(inputVipName.value);
+    console.log(inputNormalAddress.value);
+  });
+
+  inputVipName = document.getElementById('vipName');
+  inputVipAddress = document.getElementById('vipAddress');
+  buttonVipBuild = document.getElementById('vipBuild');
+  buttonNormalBuild.addEventListener('onClickedBuildVIPData', function (e) {
+    console.log(inputVipName.value);
+    console.log(inputVipAddress.value);
+  });
+
+  /***
+   *  排程 每天的 早上0秒30分9時 發起LineNotify
+   */
+  schedule.scheduleJob(_SCHEDULE_PATTERN, function () {
+    var client = new XMLHttpRequest();
+    client.responseType = 'json';
+    client.timeout = 20 * 1000;
+    client.open('POST', _API_LINE_NOTIFY);
+    client.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+    client.setRequestHeader("Authorization", "Bearer " + _TOKEN_LINE_NOTIFY);
+    client.send(encodeFormData({
+      message: '各位早安，\n新的一天繼續努力，莫忘初衷莫忘訂便當。'
+    }));
+  });
+}
 
 //---------
 
@@ -129,9 +162,7 @@ router.get('/getAllVIPMember', function (request, response, next) {
   dtaBaseConnection.getAllVIPMember(response);
 })
 
-
-
-
+//---------
 
 /***
  * form
@@ -149,14 +180,5 @@ function encodeFormData(data) {
   }
   return pairs.join('&'); // Return joined pairs separated with &
 }
-
-
-
-
-
-
-
-
-
 
 module.exports = router;
