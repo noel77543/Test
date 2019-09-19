@@ -1,81 +1,35 @@
-
 const _API_TEST = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
 const _API_LINE_NOTIFY = 'https://notify-api.line.me/api/notify';
 const _TOKEN_LINE_NOTIFY = 'Ym8jYSP0hv30ji5Ix72g3d1Bxt7XSNPMj3KjmcOtyZj';
+// const _TOKEN_LINE_NOTIFY='HK35PaVPkdUbajKYJyVBxWdor0YYdwAx2Yb9nBLnnk0';
 //每天的 早上0秒0分9時
 const _SCHEDULE_PATTERN = '00 30 09 * * *';
-var dtaBaseConnection = require('../database/DataBaseConnection');
-var express = require('express');
+
+var fs = require('fs');
 var schedule = require('node-schedule');
 var XMLHttpRequest = require("XMLHttpRequest").XMLHttpRequest;
-var fs = require('fs');
+var dtaBaseConnection = require('../../database/DataBaseConnection');
+var express = require('express');
 var router = express.Router();
 
-var buttonNormalBuild;
-var inputNormalName;
-var inputNormalAddress;
-
-var buttonVipBuild;
-var inputVipName;
-var inputVipAddress;
-
-
-
-init();
-
 
 //---------
 
-/***
- * 初始化
- */
-function init() {
-  inputNormalName = document.getElementById('normalName');
-  inputNormalAddress = document.getElementById('normalAddress');
-  buttonNormalBuild = document.getElementById('normalBuild');
-  buttonNormalBuild.addEventListener('onClickedBuildNormalData', function (e) {
-    console.log(inputVipName.value);
-    console.log(inputNormalAddress.value);
-  });
 
-  inputVipName = document.getElementById('vipName');
-  inputVipAddress = document.getElementById('vipAddress');
-  buttonVipBuild = document.getElementById('vipBuild');
-  buttonNormalBuild.addEventListener('onClickedBuildVIPData', function (e) {
-    console.log(inputVipName.value);
-    console.log(inputVipAddress.value);
-  });
-
-  /***
-   *  排程 每天的 早上0秒30分9時 發起LineNotify
-   */
-  schedule.scheduleJob(_SCHEDULE_PATTERN, function () {
-    var client = new XMLHttpRequest();
-    client.responseType = 'json';
-    client.timeout = 20 * 1000;
-    client.open('POST', _API_LINE_NOTIFY);
-    client.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-    client.setRequestHeader("Authorization", "Bearer " + _TOKEN_LINE_NOTIFY);
-    client.send(encodeFormData({
-      message: '各位早安，\n新的一天繼續努力，莫忘初衷莫忘訂便當。'
-    }));
-  });
-}
-
-//---------
 
 /***
- * 首頁網址 
- * url : http://localhost:port/
- */
-router.get('/', function (req, res, next) {
-  console.log('連線狀態:' + res.statusCode);
-  res.render('index.html', {
-    //傳遞參數 title
-    title: 'Hey!',
-    //傳遞參數 subtitle
-    subtitle: "Hello World！"
-  });
+  *  排程 每天的 早上0秒30分9時 發起LineNotify
+  */
+schedule.scheduleJob(_SCHEDULE_PATTERN, function () {
+  var client = new XMLHttpRequest();
+  client.responseType = 'json';
+  client.timeout = 20 * 1000;
+  client.open('POST', _API_LINE_NOTIFY);
+  client.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+  client.setRequestHeader("Authorization", "Bearer " + _TOKEN_LINE_NOTIFY);
+  client.send(encodeFormData({
+    message: '各位早安，\n新的一天繼續努力，莫忘初衷莫忘訂便當。'
+  }));
 });
 
 //---------
@@ -180,5 +134,6 @@ function encodeFormData(data) {
   }
   return pairs.join('&'); // Return joined pairs separated with &
 }
+
 
 module.exports = router;
