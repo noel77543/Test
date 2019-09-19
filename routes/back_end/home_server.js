@@ -75,7 +75,7 @@ router.get('/getMemberAddress', function (request, response, next) {
 router.post('/addNormalMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
   var requestBody = request.body;
-  dtaBaseConnection.addNormalMember(response, requestBody.name, requestBody.address);
+  dtaBaseConnection.addNormalMember(response, requestBody.userName, requestBody.userAddress);
 })
 
 //---------
@@ -102,7 +102,7 @@ router.get('/getAllNormalMember', function (request, response, next) {
 router.post('/addVIPMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
   var requestBody = request.body;
-  dtaBaseConnection.addVIPMember(requestBody.name, requestBody.address);
+  dtaBaseConnection.addVIPMember(requestBody.userName, requestBody.userAddress);
 })
 
 

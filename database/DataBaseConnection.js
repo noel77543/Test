@@ -13,9 +13,9 @@
  *    //建立Database
  *    b. CREATE DATABASE MemberDataBase
  *    //建立一般會員Table  與column (流水號, 姓名 , 地址)
- *    c. create table MemberDataBase.NormalMember (sid INT AUTO_INCREMENT PRIMARY KEY,name TINYTEXT, address TINYTEXT);
+ *    c. create table MemberDataBase.NormalMember (sid INT AUTO_INCREMENT PRIMARY KEY,userName TINYTEXT, userAddress TINYTEXT);
  *    //建立高級會員Tabel  與column (流水號, 姓名 , 地址)
- *    d. create table MemberDataBase.VIPMember (sid INT AUTO_INCREMENT PRIMARY KEY,name TINYTEXT, address TINYTEXT);
+ *    d. create table MemberDataBase.VIPMember (sid INT AUTO_INCREMENT PRIMARY KEY,userName TINYTEXT, userAddress TINYTEXT);
  */
 
 var mysql = require('mysql');
@@ -27,14 +27,10 @@ const TABLE_NORMAL_MEMBER = "NormalMember";
 //會員db 高級會員table
 const TABLE_VIP_MEMBER = "VIPMember";
 // //名稱
-const COLUMN_NAME = "name";
+const COLUMN_NAME = "userName";
 // //地址
-const COLUMN_ADDRESS = "address";
+const COLUMN_ADDRESS = "userAddress";
 
-//新增一般會員資料
-var insertDataNormalMember = "INSERT INTO " + TABLE_NORMAL_MEMBER;
-//新增高級會員資料
-var insertDataVIPMember = "INSERT INTO " + TABLE_VIP_MEMBER;
 
 //查詢一般會員資料
 var selectDataNormalMember = "SELECT * FROM " + TABLE_NORMAL_MEMBER;
@@ -86,8 +82,9 @@ function queryAction(response, querySql, logString) {
  *  使此方法為外部可引用 like java's public
  */
 module.exports.addNormalMember = function (response, name, address) {
-    insertDataNormalMember = insertDataNormalMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
-    queryAction(response, insertDataNormalMember, "NormalMemberData Inserted");
+    var sqlQuery  = "insert into " + TABLE_NORMAL_MEMBER + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") values ('" + name + "','" + address + "')"
+    console.log("query = "+sqlQuery)
+    queryAction(response, sqlQuery, "NormalMemberData Inserted");
 }
 
 
@@ -117,8 +114,8 @@ module.exports.getAllNormalMember = function (response) {
  *  使此方法為外部可引用 like java's public
  */
 module.exports.addVIPMember = function (response, name, address) {
-    insertDataVIPMember = insertDataVIPMember + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") VALUES ('" + name + "', '" + address + "')"
-    queryAction(response, insertDataVIPMember, "VIPMemberData Inserted");
+    var sqlQuery  = "insert into " + TABLE_VIP_MEMBER + " (" + COLUMN_NAME + "," + COLUMN_ADDRESS + ") values ('" + name + "','" + address + "')"
+    queryAction(response, sqlQuery, "VIPMemberData Inserted");
 }
 
 //----------
