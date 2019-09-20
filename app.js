@@ -20,6 +20,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+//指定此資料夾底下的資源為公開資源
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', homeClientRouter);

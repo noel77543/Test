@@ -7,8 +7,7 @@
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title><%= title%></title>
-
-  <script src="../routes/front_end/home_client.js"></script>
+  <script src="http://localhost:3000/javascripts/home_client.js"></script>
 </head>
 
 <body>
@@ -54,7 +53,7 @@
         <p>新增一般會員</p>
         名稱:<input type="text" id="normalName"></br>
         地址:<input type="text" id="normalAddress"></br>
-        <button type="button" id="normalBuild">建立</button>
+        <button type="button" id="normalBuild" onclick="onBuildNormalClickListener()">建立</button>
       </td>
     </tr>
     <tr>
@@ -65,9 +64,10 @@
         <p>新增高級會員</p>
         名稱:<input type="text" id="vipName"></br>
         地址:<input type="text" id="vipAddress"></br>
-        <button type="button" id="vipBuild" onclick="onBuildMVPClickListener()">建立</button>
+        <button type="button" id="vipBuild" onclick="onBuildVIPClickListener()">建立</button>
       </td>
     </tr>
   </table>
 </body>
+
 </html>

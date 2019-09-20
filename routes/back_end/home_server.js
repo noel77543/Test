@@ -1,14 +1,13 @@
 const _API_TEST = 'https://mdn.github.io/learning-area/javascript/oojs/json/superheroes.json';
 const _API_LINE_NOTIFY = 'https://notify-api.line.me/api/notify';
 const _TOKEN_LINE_NOTIFY = 'Ym8jYSP0hv30ji5Ix72g3d1Bxt7XSNPMj3KjmcOtyZj';
-// const _TOKEN_LINE_NOTIFY='HK35PaVPkdUbajKYJyVBxWdor0YYdwAx2Yb9nBLnnk0';
-//每天的 早上0秒0分9時
-const _SCHEDULE_PATTERN = '00 30 09 * * *';
+//每周1-5的 早上0秒30分9時
+const _SCHEDULE_PATTERN = '00 30 09 * * 1-5';
 
 var fs = require('fs');
 var schedule = require('node-schedule');
 var XMLHttpRequest = require("XMLHttpRequest").XMLHttpRequest;
-var dtaBaseConnection = require('../../database/DataBaseConnection');
+var dtaBaseConnection = require('./database/DataBaseConnection');
 var express = require('express');
 var router = express.Router();
 
@@ -102,7 +101,7 @@ router.get('/getAllNormalMember', function (request, response, next) {
 router.post('/addVIPMember', function (request, response, next) {
   console.log('連線狀態:' + response.statusCode);
   var requestBody = request.body;
-  dtaBaseConnection.addVIPMember(requestBody.userName, requestBody.userAddress);
+  dtaBaseConnection.addVIPMember(response, requestBody.userName, requestBody.userAddress);
 })
 
 
