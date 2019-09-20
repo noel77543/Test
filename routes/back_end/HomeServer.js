@@ -7,7 +7,7 @@ const _SCHEDULE_PATTERN = '00 30 09 * * 1-5';
 var fs = require('fs');
 var schedule = require('node-schedule');
 var XMLHttpRequest = require("XMLHttpRequest").XMLHttpRequest;
-var dtaBaseConnection = require('./database/DataBaseConnection');
+var dtaBaseConnection = require('./data_base/DataBaseConnection');
 var express = require('express');
 var router = express.Router();
 

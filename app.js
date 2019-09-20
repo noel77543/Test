@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var ejs = require('ejs');
-var homeClientRouter = require('./routes/front_end/home_client');
-var homeServerRouter = require('./routes/back_end/home_server');
+var homeClientRouter = require('./routes/front_end/HomeClient');
+var homeServerRouter = require('./routes/back_end/HomeServer');
 
 var app = express();
 
