@@ -27,7 +27,7 @@ schedule.scheduleJob(_SCHEDULE_PATTERN, function () {
   client.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
   client.setRequestHeader("Authorization", "Bearer " + _TOKEN_LINE_NOTIFY);
   client.send(encodeFormData({
-    message: '各位早安，\n新的一天繼續努力，莫忘初衷莫忘訂便當。'
+    message: '各位早安，\n新的一天繼續努力，莫忘初衷莫忘訂便當。\nhttp://dinbendon.net/do/'
   }));
 });
 
